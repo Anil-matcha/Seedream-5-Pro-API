@@ -1,142 +1,263 @@
-# Awesome AI Game Generation [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+# Seedream 5.0 Pro API: Python Wrapper for ByteDance's AI Image Generator
 
-> A curated list of tools, models, research, companies, and resources for generating games with AI — from prompt-to-playable-game platforms to real-time neural world models.
+[![Powered by MuAPI](https://img.shields.io/badge/Powered%20by-MuAPI-6366f1?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMSAxNHYtNGgtMnYtMmg0djZoLTJ6bTAtOFY2aDJ2MmgtMnoiLz48L3N2Zz4=)](https://muapi.ai?utm_source=github&utm_medium=badge&utm_campaign=seedream-5-pro-api)
 
-AI game generation spans a wide spectrum: LLM-assisted asset and code scaffolding on one end, and full **world models** that generate playable, interactive worlds frame-by-frame with no traditional game engine at all on the other. This list tracks the whole spectrum — platforms, models, engine integrations, NPC/dialogue systems, asset generators, audio tools, research, and where to learn/discuss it.
+[![PyPI version](https://img.shields.io/pypi/v/seedream-5-pro-api.svg)](https://pypi.org/project/seedream-5-pro-api/)
+[![GitHub stars](https://img.shields.io/github/stars/Anil-matcha/Seedream-5-Pro-API.svg)](https://github.com/Anil-matcha/Seedream-5-Pro-API/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 
-## Contents
+The most comprehensive Python wrapper for the **Seedream 5.0 Pro API** (developed by ByteDance), delivered via [muapi.ai](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api). Generate stunning, high-fidelity **4K AI images** from text prompts with advanced visual reasoning and precise typography, or transform existing images using natural-language edits — all with a simple **Seedream 5.0 Pro Python SDK**.
 
-- [World Models & Real-Time Generation](#world-models--real-time-generation)
-- [Prompt-to-Game Platforms](#prompt-to-game-platforms)
-- [AI 2D/3D Asset Generators](#ai-2d3d-asset-generators)
-- [AI NPC & Dialogue Systems](#ai-npc--dialogue-systems)
-- [AI Audio & Music for Games](#ai-audio--music-for-games)
-- [Game Engine AI Integrations](#game-engine-ai-integrations)
-- [Level & Content Generation (PCG)](#level--content-generation-pcg)
-- [Datasets & Benchmarks](#datasets--benchmarks)
-- [Papers & Research](#papers--research)
-- [Companies & Labs](#companies--labs)
-- [Learning Resources & Communities](#learning-resources--communities)
-- [Comparison: Full-Game Generators](#comparison-full-game-generators)
-- [Glossary](#glossary)
-- [Contributing](#contributing)
+> ✅ **Seedream 5.0 Pro** (a.k.a. **Seedream 5 Pro API**, **Seedream v5.0 Pro**) is ByteDance's flagship text-to-image model — up to **4K resolution**, complex scene construction, consistent character generation, and real-time knowledge integration for accurate, contextually relevant visuals.
+> - 🧪 Try **Seedream 5.0 Pro** now: [Text-to-Image Playground](https://muapi.ai/playground/bytedance-seedream-v5.0-pro?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit Playground](https://muapi.ai/playground/bytedance-seedream-v5.0-pro-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
+> - 🎨 This wrapper also supports the base **Seedream 5.0**, **Seedream 4.5**, **Seedream v4**, and **Seedream v3** models for teams that need version pinning.
 
-## World Models & Real-Time Generation
+> 🌊 **Also explore these top AI generation models:**
+> - 🎬 [Seedance 2.0 API](https://github.com/Anil-matcha/Seedance-2-API) — ByteDance's video generation model, Text-to-Video & Image-to-Video
+> - 🐎 [HappyHorse 1.0 API](https://github.com/Anil-matcha/HappyHorse-1.0-API) — Alibaba's #1 ranked video model (1392 Elo I2V)
+> - 🎬 [Veo 4 API](https://github.com/Anil-matcha/Veo-4-API) — Google DeepMind's native 4K video model
 
-Systems that generate an interactive, playable world in real time from actions/prompts, rather than assembling a traditional game engine.
+## Related Projects
 
-- [Genie 3](https://en.wikipedia.org/wiki/Genie_(AI_model)) — Google DeepMind's real-time interactive world model; generates playable 3D worlds frame-by-frame from a prompt, trained on 30,000+ hours of gameplay, with improved memory and resolution over Genie 2.
-- [Genie 2](https://en.wikipedia.org/wiki/Genie_(world_model)) — DeepMind's prior-generation model, first to extend interactive world generation from 2D to 3D environments.
-- [GameNGen](https://anthemcreation.com/en/artificial-intelligence/gamengen-and-doom-ai-video-games-real-time-generation/) — Google research showing a diffusion model can run DOOM in real time as a neural game engine, with no explicit game logic, engine, or renderer.
-- [Oasis](https://github.com/etched-ai/open-oasis) — Open-weights real-time generative Minecraft-like world model; one of the first publicly runnable neural game engines.
-- [Matrix-Game](https://arxiv.org/abs/2506.18701) — Interactive world foundation model for controllable, action-conditioned game world generation.
-- [HunyuanWorld 1.0](https://github.com/Tencent-Hunyuan/HunyuanWorld-1.0) — Generates immersive, explorable, interactive 3D worlds from text or images.
-- [Yan](https://arxiv.org/abs/2508.08601) — Tencent's foundational interactive video generation model for game-like worlds.
-- [Mineworld](https://arxiv.org/abs/2504.08388) — Real-time, open-world Minecraft-style interactive world model.
-- [LingBot-World](https://github.com/robbyant) — Open-source interactive world model effort (2026).
-- [IPR-1 (Interactive Physical Reasoner)](https://arxiv.org/pdf/2511.15407) — World model research focused on physical plausibility in generated interactive environments.
+- [Seedance-2-API](https://github.com/Anil-matcha/Seedance-2-API) — Python wrapper for ByteDance's Seedance 2.0 video generation API
+- [awesome-seedance-2.5-api-prompts](https://github.com/Anil-matcha/awesome-seedance-2.5-api-prompts) — Curated Seedance 2.5 API guide and prompts
+- [Awesome-GPT-Image-2-API-Prompts](https://github.com/Anil-matcha/Awesome-GPT-Image-2-API-Prompts) — Curated GPT-Image-2 prompts for the OpenAI API
+- [gpt-image-2-comfyui](https://github.com/Anil-matcha/gpt-image-2-comfyui) — ComfyUI custom nodes for GPT-Image-2
 
-## Prompt-to-Game Platforms
+## 🚀 Why Use Seedream 5.0 Pro API?
 
-Tools where you describe a game in natural language and get a playable, shippable result.
+Seedream 5.0 Pro is ByteDance's flagship **text-to-image** and **image-editing** model, offering maximum fidelity, prompt adherence, and typography accuracy.
 
-- [Rosebud AI](https://rosebud.ai/) — The most mature prompt-to-game platform; generates playable 2D/3D games (Phaser-based) with an in-browser chat editor, exportable code, and free hosting. Best for fast arcade/prototype loops.
-- [Summer Engine](https://www.summerengine.com/) — In-engine AI agent for Godot 4 that builds the game with you; most generous free tier for a game you can actually ship to Steam.
-- [Ludo.ai](https://ludo.ai/) — Ideation/research tool for game designers combining text/image generation with AI-powered market and trend search.
-- [the9bit](https://the9bit.com/) — AI game creation platform focused on rapid iterative prototyping.
-- [Promethean AI](https://www.prometheanai.com/) — AI co-creator for populating and building 3D game environments through natural-language commands.
+- **4K Resolution**: Generate ultra-high-fidelity images up to native 4K.
+- **Advanced Visual Reasoning**: Handles complex, multi-subject scene construction with strong prompt adherence.
+- **Precise Typography**: Renders legible, accurate text and logos inside generated images — ideal for posters, UI mockups, and product visuals.
+- **Consistent Character Generation**: Maintain the same subject/character across multiple generations.
+- **Natural-Language Image Editing**: Style transfer (Anime, Cyberpunk, Fantasy), background swaps, and object modification via `edit_image()` — no masking required.
+- **Developer-First**: Fast processing via the MuAPI infrastructure with a simple Python SDK and MCP server.
 
-## AI 2D/3D Asset Generators
+## 🌟 Key Features of Seedream 5.0 Pro API
 
-Purpose-built generators for game-ready art, textures, and 3D models (not full games).
+- ✅ **Seedream 5.0 Pro Text-to-Image**: Transform descriptive prompts into 4K AI images with `text_to_image()`.
+- ✅ **Seedream 5.0 Pro Edit**: Edit existing images using natural language with `edit_image()` — preserves lighting, color tones, and character consistency.
+- ✅ **Multiple Aspect Ratios**: `1:1`, `16:9`, `9:16`, `4:3`, `3:4` and more.
+- ✅ **Flexible Resolutions**: `1K`, `2K`, and `4K` output sizes.
+- ✅ **Multi-Image Generation**: Generate up to 4 images per request with `num_images`.
+- ✅ **Reproducible Seeds**: Pass a `seed` for deterministic, repeatable generations.
+- ✅ **File Upload**: Directly upload local images using `upload_file()` for use in edit tasks.
+- ✅ **Base & Legacy Version Support**: Also wraps base **Seedream 5.0**, **Seedream 4.5**, **Seedream v4**, and **Seedream v3** for version-pinned pipelines.
+- ✅ **MCP Server Included**: Use Seedream 5.0 Pro as a Model Context Protocol server with Claude Desktop, Cursor, or any MCP client.
 
-- [Meshy](https://www.meshy.ai/) — Covers the most steps of the 3D pipeline in one platform: text/image-to-3D, auto-rigging, and 500+ animation presets.
-- [Tripo3D](https://www.tripo3d.ai/) — Fast text/image-to-3D generation (~8s average) with topology auto-optimized for game engines and built-in character rigging.
-- [Luma AI / Genie](https://lumalabs.ai/) — Strong at photorealistic environment generation; Luma Genie is a fast, generous free tier for 3D prototyping.
-- [Scenario](https://www.scenario.com/) — Game-engine-aware asset generation built specifically for 2D game art and textures.
-- [Layer](https://layer.ai/) — AI creative pipeline for 2D game art and consistent style asset generation.
+---
 
-## AI NPC & Dialogue Systems
+## 🛠 Installation
 
-Engines that give in-game characters LLM-driven conversation, memory, and behavior.
+### Via Pip (Recommended)
+```bash
+pip install seedream-5-pro-api
+```
 
-- [Inworld AI](https://inworld.ai/) — Mature Character Engine combining an LLM dialogue core with personality, memory, emotion, and safety layers; direct Unity/Unreal integration.
-- [Convai](https://convai.com/) — Optimized for low-latency, real-time in-engine dialogue — built for multiplayer and action games where response speed matters.
-- [Charisma.ai](https://charisma.ai/) — Specializes in dialogue-driven, branching narrative storytelling with emotionally adaptive delivery.
+### From Source
+```bash
+# Clone the Seedream 5.0 Pro API repository
+git clone https://github.com/Anil-matcha/Seedream-5-Pro-API.git
+cd Seedream-5-Pro-API
 
-## AI Audio & Music for Games
+# Install required dependencies
+pip install -r requirements.txt
+```
 
-- [ElevenLabs](https://elevenlabs.io/) — AI voice generation commonly used for NPC dialogue and narration in AI-generated games.
-- [Suno](https://suno.com/) — AI music generation used for game soundtracks and adaptive audio prototyping.
+### Configuration
+Create a `.env` file in the root directory and add your [MuAPI](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) API key:
+```env
+MUAPI_API_KEY=your_muapi_api_key_here
+```
 
-## Game Engine AI Integrations
+---
 
-- [Unity MCP Plugin](https://github.com/CoplayDev/unity-mcp) — MCP server/editor bridge letting Claude, Cursor, and other MCP-compatible AI agents control the Unity Editor directly (200+ tools).
-- Unity Muse — Unity's first-party generative AI toolset for texture, animation, and behavior authoring inside the editor.
-- Godot + AI agent workflows — a fast-growing category; see GitHub topic [`ai-game-development`](https://github.com/topics/ai-game-development) for active open-source projects.
-- Unreal Engine AI assistants — emerging first- and third-party copilots for Blueprint/C++ scripting and asset placement.
+## 🤖 Seedream 5.0 Pro MCP Server
 
-## Level & Content Generation (PCG)
+You can use Seedream 5.0 Pro as an **MCP (Model Context Protocol)** server. This allows AI models (like Claude Desktop or Cursor) to directly invoke Seedream 5.0 Pro image generation and editing tools.
 
-Classic and AI-driven procedural content generation — level layouts, quests, loot, and worlds.
+### Running the MCP Server
+1. Ensure `MUAPI_API_KEY` is set in your environment.
+2. Run the server:
+   ```bash
+   python3 mcp_server.py
+   ```
+3. To test with the MCP Inspector:
+   ```bash
+   npx -y @modelcontextprotocol/inspector python3 mcp_server.py
+   ```
 
-- Procedural Content Generation via Machine Learning (PCGML) — academic umbrella term for using ML models (not hand-authored rules) to generate levels, maps, and content.
-- GitHub topic [`procedural-generation`](https://github.com/topics/procedural-generation) — active open-source PCG projects across engines and languages.
+---
 
-## Datasets & Benchmarks
+## 💻 Quick Start with Seedream 5.0 Pro API (Python)
 
-- Gameplay video corpora used to train world models (e.g. the 30,000+ hour internal dataset behind Genie 3) — mostly proprietary; watch for public releases as the field matures.
-- Benchmark suites for evaluating interactive world models on action-consistency, memory/persistence, and visual fidelity are still nascent — no standardized public leaderboard yet as of 2026.
+```python
+from seedream_api import SeedreamAPI
 
-## Papers & Research
+# Initialize the Seedream 5.0 Pro client
+api = SeedreamAPI()
 
-- Genie 3: A new frontier for world models — Google DeepMind (2025)
-- [Generative AI in Game Development: A Qualitative Research Synthesis](https://arxiv.org/html/2509.11898v1) (2025)
-- [From Masks to Worlds: A Hitchhiker's Guide to World Models](https://arxiv.org/pdf/2510.20668) (2025)
-- [Simulating the Visual World with Artificial Intelligence: A Roadmap](https://arxiv.org/pdf/2511.08585) (2025)
-- [Visual Generation in the New Era: An Evolution from Atomic Mapping to Agentic World Modeling](https://arxiv.org/pdf/2604.28185) (2026)
-- Generative Games: Positioning, Progress and Prospects — [Preprints.org](https://www.preprints.org/manuscript/202412.1531) (2024)
-- IPR-1: Interactive Physical Reasoner — [arXiv](https://arxiv.org/pdf/2511.15407) (2025)
+# 1. Generate an image from text using Seedream 5.0 Pro API
+print("Generating AI image using Seedream 5.0 Pro...")
+submission = api.text_to_image(
+    prompt="A cinematic portrait of a cyberpunk samurai in a neon-lit Tokyo alley, 4k, hyperrealistic",
+    aspect_ratio="16:9",
+    size="4K",
+)
 
-## Companies & Labs
+# 2. Wait for completion
+result = api.wait_for_completion(submission["request_id"])
+print(f"Success! View your Seedream 5.0 Pro image here: {result['outputs'][0]}")
 
-Organizations actively building AI game generation products or foundational models.
+# 3. Edit an existing image using natural language
+edit_submission = api.edit_image(
+    prompt="Change the outfit to samurai armor with gold trim, keep the face identical",
+    image_urls=["https://example.com/portrait.jpg"],
+    aspect_ratio="16:9",
+)
+edit_result = api.wait_for_completion(edit_submission["request_id"])
+print(f"Edited image: {edit_result['outputs'][0]}")
+```
 
-- **Google DeepMind** — Genie series, GameNGen research.
-- **Rosebud AI** — prompt-to-game consumer platform.
-- **Etched** — Oasis open-weights world model.
-- **Tencent** — HunyuanWorld, Yan interactive world models.
-- **Inworld AI**, **Convai**, **Charisma.ai** — AI NPC/dialogue infrastructure.
-- **Meshy**, **Tripo3D**, **Scenario**, **Layer**, **Luma AI** — AI asset generation for game pipelines.
+---
 
-## Learning Resources & Communities
+## 📡 API Endpoints & Reference
 
-- GitHub topic [`ai-game-development`](https://github.com/topics/ai-game-development) — actively populated, good source for finding new open-source projects as they appear.
-- GitHub topic [`game-generator`](https://github.com/topics/game-generator) — projects specifically generating playable games via AI/LLMs.
-- GitHub topic [`world-models`](https://github.com/topics/world-models) — research and open implementations of interactive world models.
+### 1. Seedream 5.0 Pro Text-to-Image
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v5.0-pro`
 
-## Comparison: Full-Game Generators
+```bash
+curl --location --request POST "https://api.muapi.ai/api/v1/bytedance-seedream-v5.0-pro" \
+  --header "Content-Type: application/json" \
+  --header "x-api-key: YOUR_API_KEY" \
+  --data-raw '{
+      "prompt": "A majestic eagle soaring over the snow-capped Himalayas, 4k, cinematic lighting",
+      "aspect_ratio": "16:9",
+      "size": "4K",
+      "num_images": 1
+  }'
+```
 
-| Platform | Output | Engine | Free tier | Best for |
-|---|---|---|---|---|
-| Rosebud AI | Playable 2D/3D game, exportable code | Phaser (browser) | Yes, generous | Fast arcade/prototype loops |
-| Summer Engine | Shippable game | Godot 4 | Most generous (Steam-ready) | Full, shippable indie games |
-| the9bit | Playable prototype | Proprietary | Limited | Rapid iteration |
-| Ludo.ai | Design docs, concepts, market research | N/A (ideation, not runtime) | Free tier for ideas | Pre-production ideation |
+### 2. Seedream 5.0 Pro Edit (Image-to-Image)
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v5.0-pro-edit`
 
-*Table reflects public info as of mid-2026 — capabilities and pricing change quickly in this space; PRs to correct/update welcome.*
+```bash
+curl --location --request POST "https://api.muapi.ai/api/v1/bytedance-seedream-v5.0-pro-edit" \
+  --header "Content-Type: application/json" \
+  --header "x-api-key: YOUR_API_KEY" \
+  --data-raw '{
+      "prompt": "Turn the background into a cyberpunk cityscape at night, keep the subject unchanged",
+      "image_urls": ["https://example.com/photo.jpg"],
+      "aspect_ratio": "16:9",
+      "size": "2K"
+  }'
+```
 
-## Glossary
+### 3. Seedream 5.0 (Base) Text-to-Image
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v5.0`
 
-- **World model** — a generative model trained to predict future frames/states of an environment conditioned on actions, effectively acting as a neural game engine.
-- **Prompt-to-game** — describing a game concept in natural language and receiving a playable build, as opposed to hand-coding it.
-- **PCG / PCGML** — Procedural Content Generation (and its ML-driven variant) for levels, maps, quests, and loot.
-- **Action-conditioned generation** — generating the next frame/state of a world based on a player's input action, the core mechanism behind real-time neural game engines.
+**Python SDK:**
+```python
+result = api.text_to_image_v5(prompt="A quick draft of a mountain landscape at dawn")
+```
 
-## Contributing
+### 4. Seedream 5.0 (Base) Edit
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v5.0-edit`
 
-Contributions welcome! Please read the [contribution guidelines](CONTRIBUTING.md) first. Make sure your addition is genuinely relevant to **AI-driven game generation** — full game generators, world models, and the AI tooling that directly powers them (asset/NPC/audio generation used in AI-built games) — rather than general game development or general game AI (e.g. reinforcement learning agents playing existing games).
+**Python SDK:**
+```python
+result = api.edit_image_v5(
+    prompt="Add fog rolling through the valley",
+    image_urls=["https://example.com/landscape.jpg"],
+)
+```
 
-## License
+### 5. Seedream 4.5 Text-to-Image
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v4.5`
 
-[CC0](LICENSE) — public domain.
+```bash
+curl --location --request POST "https://api.muapi.ai/api/v1/bytedance-seedream-v4.5" \
+  --header "Content-Type: application/json" \
+  --header "x-api-key: YOUR_API_KEY" \
+  --data-raw '{
+      "prompt": "A surreal sci-fi cityscape floating above the clouds, photoreal, cinematic",
+      "aspect_ratio": "1:1",
+      "size": "2K"
+  }'
+```
+
+### 6. Seedream 4.5 Edit
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v4.5-edit`
+
+**Python SDK:**
+```python
+result = api.edit_image_v4_5(
+    prompt="Replace the sky with a dramatic sunset",
+    image_urls=["https://example.com/landscape.jpg"],
+)
+```
+
+### 7. Seedream v4 Text-to-Image
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v4`
+
+**Python SDK:**
+```python
+result = api.text_to_image_v4(prompt="A fantasy castle on a floating island, artstation quality")
+```
+
+### 8. Seedream v4 Edit
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v4-edit`
+
+**Python SDK:**
+```python
+result = api.edit_image_v4(
+    prompt="Change the season from summer to winter",
+    image_urls=["https://example.com/scene.jpg"],
+)
+```
+
+### 9. Seedream v3 Text-to-Image
+**Endpoint**: `POST https://api.muapi.ai/api/v1/bytedance-seedream-v3`
+
+**Python SDK:**
+```python
+result = api.text_to_image_v3(prompt="An anime-style portrait of a warrior princess, vibrant colors")
+```
+
+---
+
+## 📖 Documentation & Guides
+
+| Method | Parameters | Description |
+| :--- | :--- | :--- |
+| `text_to_image` | `prompt`, `aspect_ratio`, `size`, `num_images`, `seed` | Generate a 4K image from text using **Seedream 5.0 Pro**. |
+| `edit_image` | `prompt`, `image_urls`, `aspect_ratio`, `size`, `seed` | Edit an existing image using natural language via **Seedream 5.0 Pro Edit**. |
+| `text_to_image_v5` | `prompt`, `aspect_ratio`, `size`, `num_images`, `seed` | Generate an image using base **Seedream 5.0**. |
+| `edit_image_v5` | `prompt`, `image_urls`, `aspect_ratio`, `size`, `seed` | Edit an image using base **Seedream 5.0 Edit**. |
+| `text_to_image_v4_5` | `prompt`, `aspect_ratio`, `size`, `num_images`, `seed` | Generate an image using **Seedream 4.5**. |
+| `edit_image_v4_5` | `prompt`, `image_urls`, `aspect_ratio`, `size`, `seed` | Edit an image using **Seedream 4.5 Edit**. |
+| `text_to_image_v4` | `prompt`, `aspect_ratio`, `size`, `num_images`, `seed` | Generate an image using **Seedream v4**. |
+| `edit_image_v4` | `prompt`, `image_urls`, `aspect_ratio`, `size`, `seed` | Edit an image using **Seedream v4 Edit**. |
+| `text_to_image_v3` | `prompt`, `aspect_ratio`, `size`, `num_images`, `seed` | Generate an image using **Seedream v3**. |
+| `upload_file` | `file_path` | Upload a local image to MuAPI for use in edit tasks. |
+| `get_result` | `request_id` | Check task status for a Seedream generation task. |
+| `wait_for_completion` | `request_id`, `poll_interval`, `timeout` | Blocking helper for Seedream generation tasks. |
+
+---
+
+## 🔗 Official Resources
+- **Playground — Seedream 5.0 Pro**: [Text-to-Image](https://muapi.ai/playground/bytedance-seedream-v5.0-pro?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit](https://muapi.ai/playground/bytedance-seedream-v5.0-pro-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
+- **Playground — Seedream 5.0 (Base)**: [Text-to-Image](https://muapi.ai/playground/bytedance-seedream-v5.0?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit](https://muapi.ai/playground/bytedance-seedream-v5.0-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
+- **Playground — Seedream 4.5**: [Text-to-Image](https://muapi.ai/playground/bytedance-seedream-v4.5?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit](https://muapi.ai/playground/bytedance-seedream-v4.5-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
+- **Playground — Seedream v4**: [Text-to-Image](https://muapi.ai/playground/bytedance-seedream-v4?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit](https://muapi.ai/playground/bytedance-seedream-v4-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
+- **API Provider**: [MuAPI.ai](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+**Keywords**: Seedream 5.0 Pro API, Seedream 5 Pro API, Seedream v5.0 Pro, Seedream 5.0 Pro, ByteDance Seedream, Seedream AI, Seedream Text-to-Image, Seedream Image Editing, Seedream Python SDK, Seedream API Python, Seedream 5.0 Pro Python Wrapper, AI Image Generator, Text-to-Image API, Image-to-Image API, 4K AI Image Generation, Seedream 5.0 API, Seedream 4.5 API, Seedream v4 API, Seedream v3 API, MuAPI, Image Generation API, AI Art Generator, ByteDance Image AI, Seedream API Documentation, Seedream Character Consistency, Seedream Typography, Python Image Generation API, Seedream 5.0 Pro Tutorial, Seedream 5.0 Pro Edit API.
