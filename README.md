@@ -1,4 +1,4 @@
-# Seedream 5.0 Pro API: Python Wrapper for ByteDance's AI Image Generator
+# Seedream 5.5 API and Seedream 5 Pro API: Python SDK for ByteDance Image Generation
 
 [![Powered by MuAPI](https://img.shields.io/badge/Powered%20by-MuAPI-6366f1?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMSAxNHYtNGgtMnYtMmg0djZoLTJ6bTAtOFY2aDJ2MmgtMnoiLz48L3N2Zz4=)](https://muapi.ai?utm_source=github&utm_medium=badge&utm_campaign=seedream-5-pro-api)
 
@@ -7,7 +7,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 
-The most comprehensive Python wrapper for the **Seedream 5.0 Pro API** (developed by ByteDance), delivered via [muapi.ai](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api). Generate stunning, high-fidelity **4K AI images** from text prompts with advanced visual reasoning and precise typography, or transform existing images using natural-language edits — all with a simple **Seedream 5.0 Pro Python SDK**.
+This Python SDK supports the **Seedream 5.5 API** and the separate **Seedream 5.0 Pro API** from ByteDance through [MuAPI](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api). Generate images, edit up to 10 reference images, and split a flat image into transparent layers with Seedream 5.5. Existing Seedream 5.0 Pro methods remain available for workflows that need its 4K output.
+
+> **Model version note:** Seedream 5.5 and Seedream 5.0 Pro are different model versions with different API endpoints and parameters. ByteDance says a Seedream 5.5 Pro version will follow; this repository's 5.5 methods use the currently available Seedream 5.5 endpoints. See the [ByteDance Seedream 5.5 announcement](https://seed.bytedance.com/en/blog/more-realistic-images-more-stable-editing-across-100-rounds-introducing-seedream-5-5).
 
 > ✅ **Seedream 5.0 Pro** (a.k.a. **Seedream 5 Pro API**, **Seedream v5.0 Pro**) is ByteDance's flagship text-to-image model — up to **4K resolution**, complex scene construction, consistent character generation, and real-time knowledge integration for accurate, contextually relevant visuals.
 > - 🧪 Try **Seedream 5.0 Pro** now: [Text-to-Image Playground](https://muapi.ai/playground/bytedance-seedream-v5.0-pro?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit Playground](https://muapi.ai/playground/bytedance-seedream-v5.0-pro-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
@@ -24,6 +26,79 @@ The most comprehensive Python wrapper for the **Seedream 5.0 Pro API** (develope
 - [awesome-seedance-2.5-api-prompts](https://github.com/Anil-matcha/awesome-seedance-2.5-api-prompts) — Curated Seedance 2.5 API guide and prompts
 - [Awesome-GPT-Image-2-API-Prompts](https://github.com/Anil-matcha/Awesome-GPT-Image-2-API-Prompts) — Curated GPT-Image-2 prompts for the OpenAI API
 - [gpt-image-2-comfyui](https://github.com/Anil-matcha/gpt-image-2-comfyui) — ComfyUI custom nodes for GPT-Image-2
+
+## Seedream 5.5 API: Python SDK, Endpoints, and Quick Start
+
+Use the Seedream 5.5 API through three MuAPI endpoints: text-to-image generation, image editing, and layer decomposition. Seedream 5.5 supports `1K`, `1.5K`, and `2K` output, eight aspect ratios, PNG or JPEG output, and a `background` option for transparent PNG assets. The [MuAPI Seedream 5.5 guide](https://muapi.ai/seedream-5.5) has current endpoint details and pricing.
+
+### Generate an image with the Seedream 5.5 API
+
+```python
+from seedream_api import SeedreamAPI
+
+api = SeedreamAPI()  # reads MUAPI_API_KEY from the environment or .env
+submission = api.text_to_image_v5_5(
+    prompt="A glass perfume bottle on pale travertine, soft morning light",
+    aspect_ratio="4:3",
+    resolution="2K",
+    background="transparent",
+)
+result = api.wait_for_completion(submission["request_id"])
+print(result)
+```
+
+### Seedream 5.5 API endpoints
+
+| Workflow | Endpoint | Python method | Notes |
+| :--- | :--- | :--- | :--- |
+| Text-to-image | `POST /api/v1/seedream-5.5` | `text_to_image_v5_5()` | 8 ratios; `1K`, `1.5K`, or `2K`; PNG or JPEG; transparent background option |
+| Image editing | `POST /api/v1/seedream-5.5-edit` | `edit_image_v5_5()` | Up to 10 reference image URLs; omit `aspect_ratio` to keep the first image's ratio |
+| Layer decomposition | `POST /api/v1/seedream-5.5-layer` | `decompose_layers_v5_5()` | One input image; returns a base image and transparent layers |
+
+All three endpoints return an asynchronous task with a `request_id`. Use `wait_for_completion()` or `get_result()` to retrieve the result. For layer decomposition, the `max_images` parameter is the number of output slots requested and billing follows that value, even when fewer layers are returned.
+
+### Seedream 5.5 text-to-image API request
+
+```bash
+curl -X POST "https://api.muapi.ai/api/v1/seedream-5.5" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $MUAPI_API_KEY" \
+  -d '{
+    "prompt": "A frosted glass serum bottle on wet travertine stone, soft morning light",
+    "aspect_ratio": "4:3",
+    "resolution": "2K",
+    "output_format": "png",
+    "background": "transparent"
+  }'
+```
+
+### Edit images with the Seedream 5.5 API
+
+```python
+submission = api.edit_image_v5_5(
+    prompt="Remove the background and preserve the product edges",
+    images_list=["https://example.com/product.png"],
+    background="transparent",
+)
+result = api.wait_for_completion(submission["request_id"])
+print(result)
+```
+
+### Decompose an image into layers
+
+```python
+submission = api.decompose_layers_v5_5(
+    image_url="https://example.com/poster.png",
+    prompt="Separate the headline, product photo, and border",
+    max_images=6,
+)
+result = api.wait_for_completion(submission["request_id"])
+print(result)
+```
+
+The Seedream 5.5 API accepts aspect ratios `1:1`, `4:3`, `3:4`, `16:9`, `9:16`, `2:3`, `3:2`, and `21:9`. For transparent output, use `output_format="png"` with `background="transparent"`. In image editing, `images_list` accepts up to 10 reference image URLs. Layer decomposition accepts one source image; `max_images` can be set from 2 to 100.
+
+Try the [Seedream 5.5 API on MuAPI](https://muapi.ai/seedream-5.5) or read ByteDance's [Seedream 5.5 model overview](https://seed.bytedance.com/en/seedream5_5).
 
 ## 🚀 Why Use Seedream 5.0 Pro API?
 
@@ -52,7 +127,13 @@ Seedream 5.0 Pro is ByteDance's flagship **text-to-image** and **image-editing**
 
 ## 🛠 Installation
 
-### Via Pip (Recommended)
+### From GitHub (includes the Seedream 5.5 methods)
+```bash
+pip install git+https://github.com/Anil-matcha/Seedream-5-Pro-API.git
+```
+
+### Existing PyPI release
+The published PyPI release may not include the newest Seedream 5.5 methods yet. Install it for the existing Seedream 5.0 Pro wrapper:
 ```bash
 pip install seedream-5-pro-api
 ```
@@ -75,9 +156,9 @@ MUAPI_API_KEY=your_muapi_api_key_here
 
 ---
 
-## 🤖 Seedream 5.0 Pro MCP Server
+## 🤖 Seedream 5.5 and Seedream 5.0 Pro MCP Server
 
-You can use Seedream 5.0 Pro as an **MCP (Model Context Protocol)** server. This allows AI models (like Claude Desktop or Cursor) to directly invoke Seedream 5.0 Pro image generation and editing tools.
+Use the included **MCP (Model Context Protocol)** server with Claude Desktop, Cursor, or another MCP client. It exposes Seedream 5.5 image generation, editing, and layer decomposition alongside the existing Seedream 5.0 Pro and older-version tools.
 
 ### Running the MCP Server
 1. Ensure `MUAPI_API_KEY` is set in your environment.
@@ -233,6 +314,9 @@ result = api.text_to_image_v3(prompt="An anime-style portrait of a warrior princ
 
 | Method | Parameters | Description |
 | :--- | :--- | :--- |
+| `text_to_image_v5_5` | `prompt`, `aspect_ratio`, `resolution`, `output_format`, `background` | Generate an image with the **Seedream 5.5 API**. |
+| `edit_image_v5_5` | `prompt`, `images_list`, `aspect_ratio`, `resolution`, `output_format`, `background` | Edit up to 10 reference images with **Seedream 5.5 Edit**. |
+| `decompose_layers_v5_5` | `image_url`, `prompt`, `resolution`, `max_images`, `output_format` | Split an image into a base image and transparent layers with **Seedream 5.5**. |
 | `text_to_image` | `prompt`, `aspect_ratio`, `size`, `num_images`, `seed` | Generate a 4K image from text using **Seedream 5.0 Pro**. |
 | `edit_image` | `prompt`, `image_urls`, `aspect_ratio`, `size`, `seed` | Edit an existing image using natural language via **Seedream 5.0 Pro Edit**. |
 | `text_to_image_v5` | `prompt`, `aspect_ratio`, `size`, `num_images`, `seed` | Generate an image using base **Seedream 5.0**. |
@@ -249,6 +333,7 @@ result = api.text_to_image_v3(prompt="An anime-style portrait of a warrior princ
 ---
 
 ## 🔗 Official Resources
+- **Seedream 5.5 API**: [MuAPI model guide and pricing](https://muapi.ai/seedream-5.5) · [ByteDance model overview](https://seed.bytedance.com/en/seedream5_5) · [ByteDance launch announcement](https://seed.bytedance.com/en/blog/more-realistic-images-more-stable-editing-across-100-rounds-introducing-seedream-5-5)
 - **Playground — Seedream 5.0 Pro**: [Text-to-Image](https://muapi.ai/playground/bytedance-seedream-v5.0-pro?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit](https://muapi.ai/playground/bytedance-seedream-v5.0-pro-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
 - **Playground — Seedream 5.0 (Base)**: [Text-to-Image](https://muapi.ai/playground/bytedance-seedream-v5.0?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit](https://muapi.ai/playground/bytedance-seedream-v5.0-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
 - **Playground — Seedream 4.5**: [Text-to-Image](https://muapi.ai/playground/bytedance-seedream-v4.5?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api) · [Edit](https://muapi.ai/playground/bytedance-seedream-v4.5-edit?utm_source=github&utm_medium=readme&utm_campaign=seedream-5-pro-api)
@@ -260,4 +345,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Keywords**: Seedream 5.0 Pro API, Seedream 5 Pro API, Seedream v5.0 Pro, Seedream 5.0 Pro, ByteDance Seedream, Seedream AI, Seedream Text-to-Image, Seedream Image Editing, Seedream Python SDK, Seedream API Python, Seedream 5.0 Pro Python Wrapper, AI Image Generator, Text-to-Image API, Image-to-Image API, 4K AI Image Generation, Seedream 5.0 API, Seedream 4.5 API, Seedream v4 API, Seedream v3 API, MuAPI, Image Generation API, AI Art Generator, ByteDance Image AI, Seedream API Documentation, Seedream Character Consistency, Seedream Typography, Python Image Generation API, Seedream 5.0 Pro Tutorial, Seedream 5.0 Pro Edit API.
+**Keywords**: Seedream 5.5 API, Seedream 5.5 Python SDK, Seedream 5.5 image generation API, Seedream 5.5 image editing API, Seedream 5.5 layer decomposition API, Seedream transparent background API, Seedream 5.0 Pro API, Seedream 5 Pro API, Seedream v5.0 Pro, ByteDance Seedream, Seedream AI, Seedream Text-to-Image, Seedream Image Editing, Seedream Python SDK, Seedream API Python, Seedream 5.0 Pro Python Wrapper, AI Image Generator, Text-to-Image API, Image-to-Image API, 4K AI Image Generation, Seedream 5.0 API, Seedream 4.5 API, Seedream v4 API, Seedream v3 API, MuAPI, Image Generation API, AI Art Generator, ByteDance Image AI, Seedream API Documentation, Seedream Character Consistency, Seedream Typography, Python Image Generation API, Seedream 5.0 Pro Tutorial, Seedream 5.0 Pro Edit API.

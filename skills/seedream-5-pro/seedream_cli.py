@@ -9,8 +9,35 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'
 from seedream_api import SeedreamAPI
 
 def main():
-    parser = argparse.ArgumentParser(description="Seedream 5.0 Pro CLI Wrapper for OpenClaw Skill")
+    parser = argparse.ArgumentParser(description="Seedream 5.5 and Seedream 5.0 Pro API CLI")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    ratios_55 = ["1:1", "4:3", "3:4", "16:9", "9:16", "2:3", "3:2", "21:9"]
+
+    t2i_55 = subparsers.add_parser("t2i-5-5", help="Generate an image with the Seedream 5.5 API")
+    t2i_55.add_argument("--prompt", required=True, help="Text prompt")
+    t2i_55.add_argument("--aspect_ratio", default="1:1", choices=ratios_55, help="Output aspect ratio")
+    t2i_55.add_argument("--resolution", default="1K", choices=["1K", "1.5K", "2K"], help="Output resolution")
+    t2i_55.add_argument("--output_format", default="png", choices=["png", "jpeg"], help="Output image format")
+    t2i_55.add_argument("--background", default="auto", choices=["auto", "transparent", "opaque"], help="Background mode")
+    t2i_55.add_argument("--wait", action="store_true", help="Wait for completion")
+
+    edit_55 = subparsers.add_parser("edit-5-5", help="Edit images with the Seedream 5.5 API")
+    edit_55.add_argument("--prompt", required=True, help="Edit instruction")
+    edit_55.add_argument("--images", required=True, nargs="+", help="One to ten source image URLs")
+    edit_55.add_argument("--aspect_ratio", choices=ratios_55, default=None, help="Optional output ratio; omitted keeps the first image ratio")
+    edit_55.add_argument("--resolution", default="1K", choices=["1K", "1.5K", "2K"], help="Output resolution")
+    edit_55.add_argument("--output_format", default="png", choices=["png", "jpeg"], help="Output image format")
+    edit_55.add_argument("--background", default="auto", choices=["auto", "transparent", "opaque"], help="Background mode")
+    edit_55.add_argument("--wait", action="store_true", help="Wait for completion")
+
+    layers_55 = subparsers.add_parser("layers-5-5", help="Decompose an image into layers with Seedream 5.5")
+    layers_55.add_argument("--image_url", required=True, help="Source PNG or JPEG URL")
+    layers_55.add_argument("--prompt", default=None, help="Optional description of layers to extract")
+    layers_55.add_argument("--resolution", default="1K", choices=["auto", "1K", "1.5K", "2K"], help="Output resolution")
+    layers_55.add_argument("--max_images", type=int, default=30, help="Requested output slots (2-100; billing follows this value)")
+    layers_55.add_argument("--output_format", default="png", choices=["png", "jpeg"], help="Base image format")
+    layers_55.add_argument("--wait", action="store_true", help="Wait for completion")
 
     def add_t2i_parser(name, help_text, default_size="2K"):
         p = subparsers.add_parser(name, help=help_text)
@@ -68,7 +95,13 @@ def main():
     try:
         api = SeedreamAPI()
 
-        if args.command == "t2i":
+        if args.command == "t2i-5-5":
+            res = api.text_to_image_v5_5(args.prompt, args.aspect_ratio, args.resolution, args.output_format, args.background)
+        elif args.command == "edit-5-5":
+            res = api.edit_image_v5_5(args.prompt, args.images, args.aspect_ratio, args.resolution, args.output_format, args.background)
+        elif args.command == "layers-5-5":
+            res = api.decompose_layers_v5_5(args.image_url, args.prompt, args.resolution, args.max_images, args.output_format)
+        elif args.command == "t2i":
             res = api.text_to_image(args.prompt, args.aspect_ratio, args.size, args.num_images, args.seed)
         elif args.command == "edit":
             res = api.edit_image(args.prompt, args.images, args.aspect_ratio, args.size, args.seed)

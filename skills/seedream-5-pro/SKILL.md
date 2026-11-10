@@ -1,6 +1,6 @@
 ---
 name: seedream-5-pro
-description: Generate 4K AI images from text prompts and edit existing images using natural language with Seedream 5.0 Pro (by ByteDance).
+description: Use the Seedream 5.5 API for image generation, editing, and layer decomposition, or generate and edit images with Seedream 5.0 Pro (by ByteDance).
 version: 1.0.0
 metadata:
   openclaw:
@@ -14,7 +14,9 @@ metadata:
     os: ["macos", "linux"]
 ---
 
-# Seedream 5.0 Pro
+# Seedream 5.5 API and Seedream 5.0 Pro API
+
+This skill provides Seedream 5.5 image generation, multi-reference editing, and layer decomposition through MuAPI. Seedream 5.5 is a distinct model from Seedream 5.0 Pro; its endpoints use `resolution`, `output_format`, and `background` parameters. The 5.0 Pro commands below remain available for existing projects.
 
 Seedream 5.0 Pro is ByteDance's flagship text-to-image model, delivering maximum-fidelity AI art with advanced visual reasoning and precise typography. This skill allows you to generate images from text and edit existing images using natural language commands.
 
@@ -23,6 +25,27 @@ Seedream 5.0 Pro is ByteDance's flagship text-to-image model, delivering maximum
 - **MUAPI_API_KEY**: You must have an API key from [muapi.ai](https://muapi.ai). Set it as an environment variable.
 
 ## Usage Guide
+
+### Seedream 5.5 API
+
+Generate images with native transparent-background output:
+```bash
+python3.11 skills/seedream-5-pro/seedream_cli.py t2i-5-5 --prompt "A glass perfume bottle on a pale stone plinth" --resolution 2K --background transparent --wait
+```
+
+Edit one or more reference images (up to 10):
+```bash
+python3.11 skills/seedream-5-pro/seedream_cli.py edit-5-5 --images "https://example.com/product.png" --prompt "Remove the background and keep the product edges crisp" --background transparent --wait
+```
+
+Split a flat image into a base image and transparent layers:
+```bash
+python3.11 skills/seedream-5-pro/seedream_cli.py layers-5-5 --image_url "https://example.com/poster.png" --prompt "Separate the headline, photo, and border" --max_images 6 --wait
+```
+
+Layer decomposition is billed by the requested `max_images` slots, even if fewer layers are returned. Keep this value close to the number of outputs you need. The [Seedream 5.5 API guide](https://muapi.ai/seedream-5.5) has endpoint parameters and current pricing.
+
+ByteDance's [Seedream 5.5 announcement](https://seed.bytedance.com/en/blog/more-realistic-images-more-stable-editing-across-100-rounds-introducing-seedream-5-5) describes native transparent assets, more realistic output, and more stable multi-turn editing. ByteDance says a Seedream 5.5 Pro version will follow; this skill's `*-5-5` commands call the current 5.5 endpoints, not a Pro endpoint.
 
 You can use Seedream 5.0 Pro to create images in various aspect ratios (1:1, 16:9, 9:16, 4:3, 3:4) and resolutions (1K, 2K, 4K).
 

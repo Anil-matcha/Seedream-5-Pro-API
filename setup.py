@@ -4,7 +4,7 @@ setup(
     name="seedream-5-pro-api",
     version="0.1.0",
     author="Anil Matcha",
-    description="Python wrapper for ByteDance's Seedream 5.0 Pro API — 4K text-to-image generation, natural-language image editing, precise typography, and consistent character generation.",
+    description="Python SDK for ByteDance's Seedream 5.5 and Seedream 5.0 Pro APIs — image generation, editing, transparent backgrounds, and layer decomposition.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     py_modules=["seedream_api", "mcp_server"],

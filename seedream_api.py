@@ -22,6 +22,67 @@ class SeedreamAPI:
             "Content-Type": "application/json"
         }
 
+    def text_to_image_v5_5(self, prompt, aspect_ratio="1:1", resolution="1K", output_format="png", background="auto"):
+        """Submit a Seedream 5.5 text-to-image task through MuAPI.
+
+        :param prompt: Text prompt describing the image to generate.
+        :param aspect_ratio: One of 1:1, 4:3, 3:4, 16:9, 9:16, 2:3, 3:2, or 21:9.
+        :param resolution: Output tier: 1K, 1.5K, or 2K.
+        :param output_format: Output format: png or jpeg.
+        :param background: auto, transparent, or opaque. Transparent output requires PNG.
+        :return: JSON response with request_id.
+        """
+        payload = {
+            "prompt": prompt,
+            "aspect_ratio": aspect_ratio,
+            "resolution": resolution,
+            "output_format": output_format,
+            "background": background,
+        }
+        return self._post_request(f"{self.base_url}/seedream-5.5", payload)
+
+    def edit_image_v5_5(self, prompt, images_list, aspect_ratio=None, resolution="1K", output_format="png", background="auto"):
+        """Submit a Seedream 5.5 image-edit task with up to 10 reference images.
+
+        :param prompt: Text describing the requested edit.
+        :param images_list: One to ten source image URLs.
+        :param aspect_ratio: Optional output ratio. Omit to keep the first image's ratio.
+        :param resolution: Output tier: 1K, 1.5K, or 2K.
+        :param output_format: Output format: png or jpeg.
+        :param background: auto, transparent, or opaque. Transparent output requires PNG.
+        :return: JSON response with request_id.
+        """
+        payload = {
+            "prompt": prompt,
+            "images_list": images_list,
+            "resolution": resolution,
+            "output_format": output_format,
+            "background": background,
+        }
+        if aspect_ratio is not None:
+            payload["aspect_ratio"] = aspect_ratio
+        return self._post_request(f"{self.base_url}/seedream-5.5-edit", payload)
+
+    def decompose_layers_v5_5(self, image_url, prompt=None, resolution="1K", max_images=30, output_format="png"):
+        """Split one source image into a base image and transparent layers.
+
+        :param image_url: Source PNG or JPEG URL.
+        :param prompt: Optional description of the layers to extract.
+        :param resolution: auto, 1K, 1.5K, or 2K.
+        :param max_images: Requested output slots, from 2 to 100. Billing follows this value.
+        :param output_format: Format of the base image; extracted layers are PNG.
+        :return: JSON response with request_id.
+        """
+        payload = {
+            "image_url": image_url,
+            "resolution": resolution,
+            "max_images": max_images,
+            "output_format": output_format,
+        }
+        if prompt is not None:
+            payload["prompt"] = prompt
+        return self._post_request(f"{self.base_url}/seedream-5.5-layer", payload)
+
     def text_to_image(self, prompt, aspect_ratio="1:1", size="2K", num_images=1, seed=None):
         """
         Submits a Seedream 5.0 Pro Text-to-Image generation task.
